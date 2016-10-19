@@ -31,7 +31,7 @@
 
     //REWRITE to allocate memory?
     upDate::~upDate(){
-        delete date;
+        delete [] date;
     }
 
    void upDate::setDate(int m, int d, int y){
@@ -142,8 +142,8 @@ int upDate::daysBetween(upDate d){
     return inputDate - thisDate;
 }
 
-void upDate::julian(){
-    std::cout<< convertToJulian(date[0], date[1], date[2]);
+int upDate::julian(){
+    return convertToJulian(date[0], date[1], date[2]);
 }
 
 //Overloading opperators
@@ -240,31 +240,32 @@ int upDate::convertToJulian(int m, int d, int y){
     return julian;
 }
 
-upDate& upDate::operator+=(const upDate& rhs){
-    //this->setDate(month, day, year);
-    return *this;
-}
-
-upDate& upDate::operator-=(const upDate& rhs){
-    // actual addition of rhs to *this
-    return *this;
-}
-
-//upDate upDate::operator+(int v){
-//   this->setDate(month, day+v, year);
-//    return *this;
-//}
-
-const upDate upDate::operator+(const upDate &other) const {
-    return upDate(*this) += other;
-}
-
 std::ostream& operator<<(std::ostream& os, const upDate& dt)
 {
     os << dt.date[0] << '/' << dt.date[1] << '/' << dt.date[2];
     return os;
 }
 
+//****TESTING GROUND****//
+
+//upDate upDate::operator+(int v){
+//   this->setDate(date[0], date[1]+v, date[2]);
+//    return *this;
+//}
+
+upDate operator+(const upDate&, const int j){
+    upDate date;
+    date.date[1] = date.date[1]+j;
+    return date;
+}
+upDate operator+(const int j, const upDate&){
+    upDate date;
+    date.date[1] = date.date[1]+j;
+    return date;
+}
+
+//this->setDate(date[0], date[1]+j, date[2]);
+//return *this;
 
 
 
