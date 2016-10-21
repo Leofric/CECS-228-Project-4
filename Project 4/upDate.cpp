@@ -133,43 +133,41 @@ int upDate::daysInMonth(int m, int y){
     }
 }
 
-////calculates the number of days between the given date and the current date
-//int upDate::daysBetween(upDate d){
-//    int inputDate = 367*d.getYear()-(7*(d.getYear()+(d.getMonth()+9)/12))/4 + (275*d.getMonth())/9 + d.getDay() + 1721013.5;
-//    
-//    int thisDate = convertToJulian(date[0], date[1], date[2]);
-//
-//    return inputDate - thisDate;
-//}
+//calculates the number of days between the given date and the current date
+int upDate::daysBetween(const upDate& d){ //FIX
+    double inputDate = upDate::convertToJulian(*(d.date), *(d.date+1), *(d.date+2));
+    double thisDate = convertToJulian(date[0], date[1], date[2]);
+    return inputDate - thisDate;
+}
 
 int upDate::julian(){
     return convertToJulian(date[0], date[1], date[2]);
 }
 
-////Overloading opperators
-//bool upDate::operator ==(const upDate& a)
-//{
-//    if(this->daysBetween(a)==0){
-//        return true;
-//    }
-//    else return false;
-//}
-//
-//bool upDate::operator <(const upDate& a)
-//{
-//    if(this->daysBetween(a)<0){
-//        return true;
-//    }
-//    else return false;
-//}
-//
-//bool upDate::operator >(const upDate& a)
-//{
-//    if(this->daysBetween(a)>0){
-//        return true;
-//    }
-//    else return false;
-//}
+//Overloading opperators
+bool upDate::operator ==(const upDate& a)
+{
+    if(this->daysBetween(a)==0){
+        return true;
+    }
+    else return false;
+}
+
+bool upDate::operator <(const upDate& a)
+{
+    if(this->daysBetween(a)<0){
+        return true;
+    }
+    else return false;
+}
+
+bool upDate::operator >(const upDate& a)
+{
+    if(this->daysBetween(a)>0){
+        return true;
+    }
+    else return false;
+}
 
 upDate& upDate::operator++(){
     this->date[1] += 1;
@@ -192,30 +190,6 @@ upDate upDate::operator--(int){ //bug here?
     operator--();
     return temp;
 }
-
-////changes the date by +n number of days
-//void upDate::incrDate(int n){
-//    if(n<0){
-//        std::cout<<"Invalid input, please enter a positive int value"<<std::endl;
-//    }
-//    else{
-//        int thisDate = convertToJulian(date[0], date[1], date[2]);
-//        thisDate += n;
-//        convertToGregorian(thisDate);
-//    }
-//}
-//
-////changes the date by -n number of days
-//void upDate::decrDate(int n){
-//    if(n<0){
-//        std::cout<<"Invalid input, please enter a positive int value"<<std::endl;
-//    }
-//    else{
-//        int thisDate = convertToJulian(date[0], date[1], date[2]);
-//        thisDate -= n;
-//        convertToGregorian(thisDate);
-//    }
-//}
 
 //used to convert Julian date to calendar date
 void upDate::convertToGregorian(int *date, int x){

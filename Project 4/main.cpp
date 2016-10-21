@@ -37,7 +37,8 @@ int main(int argc, const char * argv[]) {
     std::cout<<D1<<std::endl;
 
     std::cout<<"THE END!"<<std::endl;
-    std::cout<<D1-D2<<std::endl;    
+    std::cout<<D1-D2<<std::endl;
+    std::cout<<D1.daysBetween(D2)<<std::endl;
     return 0;
 
 }

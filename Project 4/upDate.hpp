@@ -22,9 +22,7 @@ public:
     int getYear();
     std::string getMonthName();
     int daysInMonth(int m, int y);
-   // int daysBetween(upDate d);
-   // void incrDate(int n);
-   // void decrDate(int n);
+    int daysBetween(const upDate& d);
     static void convertToGregorian(int *date, int x);
     static int convertToJulian(int m, int d, int y);
     bool operator ==(const upDate& a);
@@ -50,10 +48,8 @@ public:
     //
     //carl
     
-    //operator D5 = D2 – 4; // subtract 4 days from D2
-    // cout << upDate::GetDateCount(); // a static method that returns the number of myDate objects
-    //that currently exist
-    //copy constructor
+   //static method
+   //Copy Constructor
     
 
 private:
