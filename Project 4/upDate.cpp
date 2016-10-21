@@ -12,11 +12,11 @@
 
     //REWRITE to allocate memory?
     upDate::upDate(){
-        date = new int [3]{5, 11, 1959};
+        date = new int[3]{5, 11, 1959};
     }
 
     upDate::upDate(int m, int d, int y){
-        date = new int [3]{5, 11, 1959};
+        date = new int[3]{5, 11, 1959};
         if (m<1 || m>12 || d<1 || d>31 || y<1 || y>2099 || y<1801 || d>daysInMonth(m,y)){
             date[0] = 5;
             date[1] = 11;
@@ -29,9 +29,9 @@
         }
     }
 
-    //REWRITE to allocate memory?
     upDate::~upDate(){
         delete [] date;
+        date = 0;
     }
 
    void upDate::setDate(int m, int d, int y){
@@ -133,91 +133,92 @@ int upDate::daysInMonth(int m, int y){
     }
 }
 
-//calculates the number of days between the given date and the current date
-int upDate::daysBetween(upDate d){
-    int inputDate = 367*d.getYear()-(7*(d.getYear()+(d.getMonth()+9)/12))/4 + (275*d.getMonth())/9 + d.getDay() + 1721013.5;
-    
-    int thisDate = convertToJulian(date[0], date[1], date[2]);
-
-    return inputDate - thisDate;
-}
+////calculates the number of days between the given date and the current date
+//int upDate::daysBetween(upDate d){
+//    int inputDate = 367*d.getYear()-(7*(d.getYear()+(d.getMonth()+9)/12))/4 + (275*d.getMonth())/9 + d.getDay() + 1721013.5;
+//    
+//    int thisDate = convertToJulian(date[0], date[1], date[2]);
+//
+//    return inputDate - thisDate;
+//}
 
 int upDate::julian(){
     return convertToJulian(date[0], date[1], date[2]);
 }
 
-//Overloading opperators
-bool upDate::operator ==(const upDate& a)
-{
-    if(this->daysBetween(a)==0){
-        return true;
-    }
-    else return false;
-}
-
-bool upDate::operator <(const upDate& a)
-{
-    if(this->daysBetween(a)<0){
-        return true;
-    }
-    else return false;
-}
-
-bool upDate::operator >(const upDate& a)
-{
-    if(this->daysBetween(a)>0){
-        return true;
-    }
-    else return false;
-}
+////Overloading opperators
+//bool upDate::operator ==(const upDate& a)
+//{
+//    if(this->daysBetween(a)==0){
+//        return true;
+//    }
+//    else return false;
+//}
+//
+//bool upDate::operator <(const upDate& a)
+//{
+//    if(this->daysBetween(a)<0){
+//        return true;
+//    }
+//    else return false;
+//}
+//
+//bool upDate::operator >(const upDate& a)
+//{
+//    if(this->daysBetween(a)>0){
+//        return true;
+//    }
+//    else return false;
+//}
 
 upDate& upDate::operator++(){
-        incrDate(1);
-        return *this;
+    this->date[1] += 1;
+    return *this;
     }
+
 upDate upDate::operator++(int){
-        upDate temp(*this);
+        upDate temp;
         operator++();
         return temp;
     }
 
 upDate& upDate::operator--(){
-    decrDate(1);
+    date[1] = date[1]-1;
     return *this;
 }
 
-upDate upDate::operator--(int){
-    upDate temp(*this);
-    operator++();
+upDate upDate::operator--(int){ //bug here?
+    upDate temp;
+    operator--();
     return temp;
 }
 
-//changes the date by +n number of days
-void upDate::incrDate(int n){
-    if(n<0){
-        std::cout<<"Invalid input, please enter a positive int value"<<std::endl;
-    }
-    else{
-        int thisDate = convertToJulian(date[0], date[1], date[2]);
-        thisDate += n;
-        convertToGregorian(thisDate);
-    }
-}
-
-//changes the date by -n number of days
-void upDate::decrDate(int n){
-    if(n<0){
-        std::cout<<"Invalid input, please enter a positive int value"<<std::endl;
-    }
-    else{
-        int thisDate = convertToJulian(date[0], date[1], date[2]);
-        thisDate -= n;
-        convertToGregorian(thisDate);
-    }
-}
+////changes the date by +n number of days
+//void upDate::incrDate(int n){
+//    if(n<0){
+//        std::cout<<"Invalid input, please enter a positive int value"<<std::endl;
+//    }
+//    else{
+//        int thisDate = convertToJulian(date[0], date[1], date[2]);
+//        thisDate += n;
+//        convertToGregorian(thisDate);
+//    }
+//}
+//
+////changes the date by -n number of days
+//void upDate::decrDate(int n){
+//    if(n<0){
+//        std::cout<<"Invalid input, please enter a positive int value"<<std::endl;
+//    }
+//    else{
+//        int thisDate = convertToJulian(date[0], date[1], date[2]);
+//        thisDate -= n;
+//        convertToGregorian(thisDate);
+//    }
+//}
 
 //used to convert Julian date to calendar date
-void upDate::convertToGregorian(int x){
+void upDate::convertToGregorian(int *date, int x){
     int l, n, i, j, k;
     l= x+68569;
     n= 4*l/146097;
@@ -235,7 +236,7 @@ void upDate::convertToGregorian(int x){
     date[2] = i;
 }
 
-int upDate::convertToJulian(int m, int d, int y){
+    int upDate::convertToJulian(int m, int d, int y){
     int julian = 367*y-(7*(y+(m+9)/12))/4 + (275*m)/9 + d + 1721013.5;
     return julian;
 }
@@ -246,27 +247,51 @@ std::ostream& operator<<(std::ostream& os, const upDate& dt)
     return os;
 }
 
+upDate operator+(upDate& d, const int j){
+    double JD = upDate::convertToJulian(*(d.date), *(d.date+1), *(d.date+2));
+    JD += j;
+    int k[3];
+    upDate::convertToGregorian(k, JD);
+    return upDate(k[0], k[1], k[2]);
+}
+
+upDate operator+(int j, upDate& d){
+    double JD = upDate::convertToJulian(*(d.date), *(d.date+1), *(d.date+2));
+    JD += j;
+    int k[3];
+    upDate::convertToGregorian(k, JD);
+    return upDate(k[0], k[1], k[2]);
+}
+
+upDate operator-(const int j, const upDate& d){
+    double JD = upDate::convertToJulian(*(d.date), *(d.date+1), *(d.date+2));
+    JD -= j;
+    int k[3];
+    upDate::convertToGregorian(k, JD);
+    return upDate(k[0], k[1], k[2]);
+}
+
+upDate operator-(const upDate& d, const int j){
+    double JD = upDate::convertToJulian(*(d.date), *(d.date+1), *(d.date+2));
+    JD -= j;
+    int k[3];
+    upDate::convertToGregorian(k, JD);
+    return upDate(k[0], k[1], k[2]);
+}
+
+
+int upDate::operator -(const upDate& d){
+    return convertToJulian(*(date), *(date + 1), *(date + 2)) - convertToJulian(*(d.date), *(d.date+1), *(d.date+2));
+}
+
+void upDate::operator=(const upDate& d){
+    date[0] = d.date[0];
+    date[1] = d.date[1];
+    date[2] = d.date[2];
+}
+
+
 //****TESTING GROUND****//
-
-//upDate upDate::operator+(int v){
-//   this->setDate(date[0], date[1]+v, date[2]);
-//    return *this;
-//}
-
-upDate operator+(const upDate&, const int j){
-    upDate date;
-    date.date[1] = date.date[1]+j;
-    return date;
-}
-upDate operator+(const int j, const upDate&){
-    upDate date;
-    date.date[1] = date.date[1]+j;
-    return date;
-}
-
-//this->setDate(date[0], date[1]+j, date[2]);
-//return *this;
-
 
 
 //notes:
@@ -288,7 +313,7 @@ upDate operator+(const int j, const upDate&){
  
  delete [] pvalue;
  
- 
+ Vector<int> integers3{integers1} //copy constructor
  
  
  

@@ -10,19 +10,34 @@
 #include "upDate.hpp"
 
 int main(int argc, const char * argv[]) {
-    upDate D2;
-    D2++;
-    ++D2;
-    --D2;
-    D2--;
-    std::cout<<D2<<std::endl;
-    std::cout<<D2.julian();
     upDate D1(10,27,2010);
-    D1 = D1+5;
-    D1 = 5 + D1;
- //   upDate D3 = D2+5;
-//std::cout<<D3<<std::endl;
-  //  int x = D3-D2;
-  //  upDate D4 = 5+D2;
+    upDate D2;
+    
+    D1++;
+    std::cout<<D1<<std::endl;
+
+    ++D1;
+    std::cout<<D1<<std::endl;
+
+    --D1;
+    std::cout<<D1<<std::endl;
+
+    D1--;
+    std::cout<<D1<<std::endl;
+
+    std::cout<<D1.julian()<<std::endl;
+
+    D1 = D1 + 1;
+    std::cout<<D1<<std::endl;
+    D1 = D1 - 1;
+    std::cout<<D1<<std::endl;
+    D1 = 1 + D1;
+    std::cout<<D1<<std::endl;
+    D1 = 1 - D1;
+    std::cout<<D1<<std::endl;
+
+    std::cout<<"THE END!"<<std::endl;
+    std::cout<<D1-D2<<std::endl;    
     return 0;
+
 }
