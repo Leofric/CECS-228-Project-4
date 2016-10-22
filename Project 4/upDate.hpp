@@ -12,9 +12,11 @@
 #include <stdio.h>
 #include <string>
 class upDate{
+    static int dateCount;
 public:
     upDate();
     upDate(int month, int day, int year);
+    upDate(const upDate & d);
     ~upDate();
     void setDate(int m, int d, int y);
     int getMonth();
@@ -39,8 +41,8 @@ public:
     friend upDate operator+(int j, upDate& d);
     friend upDate operator-(const int j, const upDate&);
     friend upDate operator-(const upDate&, const int j);
-
     int operator -(const upDate& a);
+    static int GetDateCount();
 
 
     //

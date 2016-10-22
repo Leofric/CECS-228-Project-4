@@ -10,97 +10,106 @@
 #include <string>
 #include <iostream>
 
-    //REWRITE to allocate memory?
-    upDate::upDate(){
-        date = new int[3]{5, 11, 1959};
-    }
+upDate::upDate(){
+    date = new int[3]{5, 11, 1959};
+    dateCount++;
+}
 
-    upDate::upDate(int m, int d, int y){
-        date = new int[3]{5, 11, 1959};
-        if (m<1 || m>12 || d<1 || d>31 || y<1 || y>2099 || y<1801 || d>daysInMonth(m,y)){
-            date[0] = 5;
-            date[1] = 11;
-            date[2] = 1959;
-        }
-        else{
-            date[0] = m;
-            date[1] = d;
-            date[2] = y;
-        }
-    }
+upDate::upDate(const upDate & d){
+    date = new int[3];
+    date[0] = d.date[0];
+    date[1] = d.date[1];
+    date[2] = d.date[2];
+    dateCount++;
+}
 
-    upDate::~upDate(){
-        delete [] date;
-        date = 0;
+upDate::upDate(int m, int d, int y){
+    date = new int[3]{5, 11, 1959};
+    if (m<1 || m>12 || d<1 || d>31 || y<1 || y>2099 || y<1801 || d>daysInMonth(m,y)){
+        date[0] = 5;
+        date[1] = 11;
+        date[2] = 1959;
     }
+    else{
+        date[0] = m;
+        date[1] = d;
+        date[2] = y;
+    }
+    dateCount++;
+}
 
-   void upDate::setDate(int m, int d, int y){
-       if (m<1 || m>12 || d<1 || d>31 || y<1 || y>2099 || y<1801 || d>daysInMonth(m,y)){
-           date[0] = 5;
-           date[1] = 11;
-           date[2] = 1959;
-       }
-       else{
-           date[0] = m;
-           date[1] = d;
-           date[2] = y;
-       }
-    }
+upDate::~upDate(){
+    delete [] date;
+    date = 0;
+}
 
-    int upDate::getMonth(){
-        return date[0];
+void upDate::setDate(int m, int d, int y){
+    if (m<1 || m>12 || d<1 || d>31 || y<1 || y>2099 || y<1801 || d>daysInMonth(m,y)){
+        date[0] = 5;
+        date[1] = 11;
+        date[2] = 1959;
     }
+    else{
+        date[0] = m;
+        date[1] = d;
+        date[2] = y;
+    }
+}
 
-    int upDate::getDay(){
-        return date[1];
-    }
+int upDate::getMonth(){
+    return date[0];
+}
 
-    int upDate::getYear(){
-        return date[2];
-    }
+int upDate::getDay(){
+    return date[1];
+}
 
-    std::string upDate::getMonthName(){
-        std::string name;
-        switch (date[0]) {
-            case 1:
-                name = "January";
-                break;
-            case 2:
-                name = "Febuary";
-                break;
-            case 3:
-                name = "March";
-                break;
-            case 4:
-                name = "April";
-                break;
-            case 5:
-                name = "May";
-                break;
-            case 6:
-                name = "June";
-                break;
-            case 7:
-                name = "July";
-                break;
-            case 8:
-                name = "August";
-                break;
-            case 9:
-                name = "September";
-                break;
-            case 10:
-                name = "October";
-                break;
-            case 11:
-                name = "November";
-                break;
-            case 12:
-                name = "December";
-                break;
-        }
-        return name;
+int upDate::getYear(){
+    return date[2];
+}
+
+std::string upDate::getMonthName(){
+    std::string name;
+    switch (date[0]) {
+        case 1:
+            name = "January";
+            break;
+        case 2:
+            name = "Febuary";
+            break;
+        case 3:
+            name = "March";
+            break;
+        case 4:
+            name = "April";
+            break;
+        case 5:
+            name = "May";
+            break;
+        case 6:
+            name = "June";
+            break;
+        case 7:
+            name = "July";
+            break;
+        case 8:
+            name = "August";
+            break;
+        case 9:
+            name = "September";
+            break;
+        case 10:
+            name = "October";
+            break;
+        case 11:
+            name = "November";
+            break;
+        case 12:
+            name = "December";
+            break;
     }
+    return name;
+}
 
 int upDate::daysInMonth(int m, int y){
     switch (m) {
@@ -172,13 +181,13 @@ bool upDate::operator >(const upDate& a)
 upDate& upDate::operator++(){
     this->date[1] += 1;
     return *this;
-    }
+}
 
 upDate upDate::operator++(int){
         upDate temp;
         operator++();
         return temp;
-    }
+}
 
 upDate& upDate::operator--(){
     date[1] = date[1]-1;
@@ -210,7 +219,7 @@ void upDate::convertToGregorian(int *date, int x){
     date[2] = i;
 }
 
-    int upDate::convertToJulian(int m, int d, int y){
+int upDate::convertToJulian(int m, int d, int y){
     int julian = 367*y-(7*(y+(m+9)/12))/4 + (275*m)/9 + d + 1721013.5;
     return julian;
 }
@@ -264,34 +273,7 @@ void upDate::operator=(const upDate& d){
     date[2] = d.date[2];
 }
 
-
-//****TESTING GROUND****//
-
-
-//notes:
-/*
- cout<<upDate.GetDateCount()
- - a static method that returns the number of myDate objects that are in existence
- - initialize in the upDate class
- - "Object count"
- - every time you construct an object, increment
- - every time you deconstruct, decrement
- - On tutorials point
- 
- - additional requirements
- - data members are pointers
- - in constructors, dynamically allocate memory?
- 
- char* pvalue = NULL;
- pvalue = new char[20];
- 
- delete [] pvalue;
- 
- Vector<int> integers3{integers1} //copy constructor
- 
- 
- 
- */
-
-
-
+int upDate::GetDateCount()
+{
+    return dateCount;
+}
