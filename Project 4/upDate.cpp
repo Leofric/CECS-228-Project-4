@@ -10,9 +10,11 @@
 #include <string>
 #include <iostream>
 
+int upDate::dateCount = 0;
+
 upDate::upDate(){
     date = new int[3]{5, 11, 1959};
-    dateCount++;
+    dateCount++; //new date
 }
 
 upDate::upDate(const upDate & d){
@@ -20,7 +22,7 @@ upDate::upDate(const upDate & d){
     date[0] = d.date[0];
     date[1] = d.date[1];
     date[2] = d.date[2];
-    dateCount++;
+    dateCount++; //new date
 }
 
 upDate::upDate(int m, int d, int y){
@@ -35,12 +37,13 @@ upDate::upDate(int m, int d, int y){
         date[1] = d;
         date[2] = y;
     }
-    dateCount++;
+    dateCount++; //new date
 }
 
 upDate::~upDate(){
     delete [] date;
     date = 0;
+    dateCount--; //delete date
 }
 
 void upDate::setDate(int m, int d, int y){
@@ -142,8 +145,7 @@ int upDate::daysInMonth(int m, int y){
     }
 }
 
-//calculates the number of days between the given date and the current date
-int upDate::daysBetween(const upDate& d){ //FIX
+int upDate::daysBetween(const upDate& d){
     double inputDate = upDate::convertToJulian(*(d.date), *(d.date+1), *(d.date+2));
     double thisDate = convertToJulian(date[0], date[1], date[2]);
     return inputDate - thisDate;
@@ -153,7 +155,6 @@ int upDate::julian(){
     return convertToJulian(date[0], date[1], date[2]);
 }
 
-//Overloading opperators
 bool upDate::operator ==(const upDate& a)
 {
     if(this->daysBetween(a)==0){
@@ -164,7 +165,7 @@ bool upDate::operator ==(const upDate& a)
 
 bool upDate::operator <(const upDate& a)
 {
-    if(this->daysBetween(a)<0){
+    if(this->daysBetween(a)>0){
         return true;
     }
     else return false;
@@ -172,7 +173,7 @@ bool upDate::operator <(const upDate& a)
 
 bool upDate::operator >(const upDate& a)
 {
-    if(this->daysBetween(a)>0){
+    if(this->daysBetween(a)<0){
         return true;
     }
     else return false;
@@ -200,7 +201,6 @@ upDate upDate::operator--(int){ //bug here?
     return temp;
 }
 
-//used to convert Julian date to calendar date
 void upDate::convertToGregorian(int *date, int x){
     int l, n, i, j, k;
     l= x+68569;
