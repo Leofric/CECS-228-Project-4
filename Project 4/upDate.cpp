@@ -209,23 +209,25 @@ bool upDate::operator >(const upDate& a)
 }
 
 upDate& upDate::operator++(){
-    this->date[1] += 1;
+    int k[3];
+    upDate::convertToGregorian(k, upDate::convertToJulian(date[0], date[1]+1, date[2]));
     return *this;
 }
 
 upDate upDate::operator++(int){
-        upDate temp;
-        operator++();
-        return temp;
+    upDate temp(*this);
+    operator++();
+    return temp;
 }
 
 upDate& upDate::operator--(){
-    date[1] = date[1]-1;
+    int k[3];
+    upDate::convertToGregorian(k, upDate::convertToJulian(date[0], date[1]-1, date[2]));
     return *this;
 }
 
-upDate upDate::operator--(int){ //bug here?
-    upDate temp;
+upDate upDate::operator--(int){
+    upDate temp(*this);
     operator--();
     return temp;
 }
@@ -267,7 +269,6 @@ upDate operator-(const upDate& d, const int j){
     upDate::convertToGregorian(k, JD);
     return upDate(k[0], k[1], k[2]);
 }
-
 
 int upDate::operator -(const upDate& d){
     return convertToJulian(*(date), *(date + 1), *(date + 2)) - convertToJulian(*(d.date), *(d.date+1), *(d.date+2));
