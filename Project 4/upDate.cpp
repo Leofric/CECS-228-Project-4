@@ -155,6 +155,35 @@ int upDate::julian(){
     return convertToJulian(date[0], date[1], date[2]);
 }
 
+void upDate::convertToGregorian(int *date, int x){
+    int l, n, i, j, k;
+    l= x+68569;
+    n= 4*l/146097;
+    l= l-(146097*n+3)/4;
+    i= 4000*(l+1)/1461001;
+    l= l-1461*i/4+31;
+    j= 80*l/2447;
+    k= l-2447*j/80;
+    l= j/11;
+    j= j+2-12*l;
+    i= 100*(n-49)+i+l;
+    
+    date[0] = j;
+    date[1] = k+1;
+    date[2] = i;
+}
+
+int upDate::convertToJulian(int m, int d, int y){
+    int julian = 367*y-(7*(y+(m+9)/12))/4 + (275*m)/9 + d + 1721013.5;
+    return julian;
+}
+
+int upDate::GetDateCount()
+{
+    return dateCount;
+}
+
+//Overload operators
 bool upDate::operator ==(const upDate& a)
 {
     if(this->daysBetween(a)==0){
@@ -199,29 +228,6 @@ upDate upDate::operator--(int){ //bug here?
     upDate temp;
     operator--();
     return temp;
-}
-
-void upDate::convertToGregorian(int *date, int x){
-    int l, n, i, j, k;
-    l= x+68569;
-    n= 4*l/146097;
-    l= l-(146097*n+3)/4;
-    i= 4000*(l+1)/1461001;
-    l= l-1461*i/4+31;
-    j= 80*l/2447;
-    k= l-2447*j/80;
-    l= j/11;
-    j= j+2-12*l;
-    i= 100*(n-49)+i+l;
-    
-    date[0] = j;
-    date[1] = k+1;
-    date[2] = i;
-}
-
-int upDate::convertToJulian(int m, int d, int y){
-    int julian = 367*y-(7*(y+(m+9)/12))/4 + (275*m)/9 + d + 1721013.5;
-    return julian;
 }
 
 std::ostream& operator<<(std::ostream& os, const upDate& dt)
@@ -271,9 +277,4 @@ void upDate::operator=(const upDate& d){
     date[0] = d.date[0];
     date[1] = d.date[1];
     date[2] = d.date[2];
-}
-
-int upDate::GetDateCount()
-{
-    return dateCount;
 }
